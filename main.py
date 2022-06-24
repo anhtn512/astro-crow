@@ -13,8 +13,13 @@ from bs4 import BeautifulSoup
 CONFIG_FILE = "config.yml"
 PROPOSAL_LINK_PREFIX = "https://api.app.astrodao.com/api/v1/proposals/"
 DAO_LINK_PREFIX = "https://api.app.astrodao.com/api/v1/daos/"
-DAO = "news.sputnik-dao.near"
-PROPOSAL_PREFIX = "https://app.astrodao.com/dao/news.sputnik-dao.near/proposals/news.sputnik-dao.near"
+DAOs = [
+    "news.sputnik-dao.near",
+    "nearweek-news-contribution.sputnik-dao.near"
+]
+# DAO = "news.sputnik-dao.near"
+DAO = "nearweek-news-contribution.sputnik-dao.near"
+PROPOSAL_PREFIX = "https://app.astrodao.com/dao/news.sputnik-dao.near/proposals/" + DAO
 FOLDER_RESULT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "result")
 today = date.today()
 today_str1 = today.strftime("%d/%m/%Y")
@@ -60,7 +65,8 @@ def get_proposal(id):
         "link_proposal": link_proposal,
         "proposer": proposer,
         "description": description,
-        "link": link
+        "link": link,
+        "created_at": proposal["createdAt"]
     }
 
 
@@ -88,7 +94,8 @@ def main(args):
     data = []
     for proposal in proposals:
         data.append({
-            "date": today_str1,
+            # "date": today_str1,
+            "date": proposal["created_at"],
             "tags": "",
             "title": proposal["description"],
             "link": proposal["link"],
